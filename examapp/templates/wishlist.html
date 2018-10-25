@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Exam</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- <link rel="stylesheet" type="text/css" media="screen" href="main.css" /> -->
+    <style>
+    * {
+            /* outline: 1px solid green; */
+            font-family: Arial, Helvetica, sans-serif;
+            font-family: 'Roboto Slab', serif;
+            background-image:
+        }
+
+    .container{
+      width: 90%;
+      min-height: 600px;
+      margin: 20px 50px ;
+      background-color: white;
+      padding-top: 10px;
+      padding-left:20px;
+    }
+    body{
+      background: url('http://dev.marbledistilling.com/wp-content/uploads/2017/08/marble_bg.jpg?id=61')
+    }
+    header{
+      width: 100%;
+      height:80px;
+      margin:20px auto;
+      padding: 10px 0 30px 25px;
+      background-color: black;
+      color: white;
+      font-style: oblique;
+      font-size: 23px;
+    }
+
+    fieldset{
+      border: 5px solid #FCBBAC;
+      border-radius: 10px;
+      display:inline-block;
+      padding: 20px;
+      margin: 20px;
+      font-size: 20px;
+      background-color: white;
+
+    }
+    .registration{
+      width: 500px;
+      min-height: 500px;
+    }
+    .login{
+      display:inline-block;
+      width: 500px;
+      vertical-align: top;
+    }
+    legend{
+      font-style: oblique;
+    }
+    .button{
+    background-color: #000000;
+    color: white;
+    border-radius: 6px;
+    font-size: 14px;
+    }
+.logout{
+  margin-left: 90%;
+}
+table th{
+   border-bottom: 2px solid black;
+   padding: 10px;
+}
+table td{
+  text-align: center;
+  padding:10px;
+}
+.create{
+  margin-left: 40%;
+}
+
+    </style>
+  </head>
+  <body>
+
+    <header>
+        <h1>Hello, {{request.session.username}} !</h1>
+    </header>
+
+    <a class='logout' href="/logout">Logout</a>
+
+    <div class="container">
+      <h2>Your Wishlist:</h2>
+
+    <table id="my_items">
+        <tr>
+            <th>Items</th>
+            <th>Added_by</th>
+            <th>Date Added</th>
+            <th>Action</th>
+        </tr>
+
+          {% for i in added_user%}
+
+        <tr>
+            <td><a href="details/{{i.item.id}}">{{i.item.product}}</a></td>
+            <td>{{i.item.added_by.username}}</td>
+            <td>{{i.item.created_at}}</td>
+            <td>
+              {%if request.session.id == i.item.added_by_id%}
+
+                <a href="delete/{{i.item.id}}">Delete</a>
+              {%else%}
+                <a href='remove/{{i.id}}'>Remove from my wishlist</a>
+              {%endif%}
+            </td>
+        </tr>
+        {% endfor %}
+
+    </table>
+      <br><br>
+    <h2>Other User's Travel Plans</h2>
+
+    <table id="others">
+      <tr>
+          <th>Items</th>
+          <th>Added_by</th>
+          <th>Date Added</th>
+          <th>Action</th>
+      </tr>
+
+        <!-- Loop through and add TR dependent on users-->
+        {% for i in all_items%}
+        <tr>
+          <td><a href="/details/{{i.id}}">{{i.product}}</a></td>
+          <td>{{i.added_by.username}}</td>
+          <td>{{i.created_at}}</td>
+          <td>
+                <a href="/added/{{i.id}}">Add to my wishlist </a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    <br><br>
+    <a class='create' href="/create">Add Item</a>
+    </div>
+  </body>
+</html>
